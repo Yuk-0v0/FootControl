@@ -53,21 +53,34 @@ app::String* WebRequestUtils_MakeInitialUrl_Hook(app::String* targetUrl, app::St
     std::string reurl = il2cppi_to_string(re);
     LOG_DEBUG("WebRequestUtils_MakeInitialUrl_Hook return: %s", reurl.c_str());
     get_proxy();
-    if (proxy&& proxyhost!="") {
-        std::string or_url = reurl;
-        size_t pos = reurl.find("gryphline.com");
+    if (proxy && !proxyhost.empty()) {
+        std::string original_url = reurl;
+    
+        std::string::size_type pos = reurl.find("://");
         if (pos != std::string::npos) {
-            reurl.replace(pos, std::string("gryphline.com").length(), proxyhost);
+            pos += 3;
+            std::string::size_type pos_end = reurl.find('/', pos);
+            if (pos_end == std::string::npos) {
+                pos_end = reurl.size();
+            }
+            std::string host = reurl.substr(pos, pos_end - pos);
+       
+            if (host.find("gryphline.com") != std::string::npos ||
+                host.find("hg-cdn.com") != std::string::npos ||
+                host.find("hypergryph.com") != std::string::npos) {
+                reurl.replace(pos, pos_end - pos, proxyhost);
+                }
         }
-
-        pos = reurl.find("hg-cdn.com");
-        if (pos != std::string::npos) {
-            reurl.replace(pos, std::string("hg-cdn.com").length(), proxyhost);
+   
+        std::string https_prefix = "https://";
+        std::string http_prefix = "http://";
+        if (reurl.compare(0, https_prefix.length(), https_prefix) == 0) {
+            reurl.replace(0, https_prefix.length(), http_prefix);
         }
-        LOG_WARNING("Proxy: %s -->%s", or_url.c_str(), reurl.c_str());
-        return string_to_il2cppi(reurl); // 将修改后的 std::string 转换回 app::String*
+    
+        LOG_WARNING("Proxy: %s --> %s", original_url.c_str(), reurl.c_str());
+        return string_to_il2cppi(reurl);
     }
-
     return re;
 }
 app::String* UnityWebRequest_get_url_Hook (void/*app::UnityWebRequest*/* __this, app::MethodInfo* method) {
