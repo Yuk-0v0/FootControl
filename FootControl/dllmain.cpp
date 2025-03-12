@@ -1,5 +1,6 @@
 ﻿#include "api/directx/D3D11Hook.hpp"
 #include "il2cpp/il2cpp-init.hpp"
+#include <windows.h>
 
 #include "includes.h"
 #include "api/json/json.hpp"
@@ -7,9 +8,10 @@ using json = nlohmann::json;
 bool proxy = false;
 std::string proxyhost = "";
 
+
 #include "functions/Settings/Settings.h"
 static app::String* WebRequestUtils_MakeInitialUrl_Hook(app::String* targetUrl, app::String* localUrl, app::MethodInfo* method);
-app::String* UnityWebRequest_get_url_Hook (void/*app::UnityWebRequest*/* __this, app::MethodInfo* method);
+
 
 static void get_proxy() {
     std::ifstream file("FootControl.json");
@@ -46,12 +48,12 @@ static void get_proxy() {
     }
 }
 app::String* WebRequestUtils_MakeInitialUrl_Hook(app::String* targetUrl, app::String* localUrl, app::MethodInfo* method) {
-    LOG_DEBUG("WebRequestUtils_MakeInitialUrl_Hook targetUrl: %s", il2cppi_to_string(targetUrl).c_str());
-    LOG_DEBUG("WebRequestUtils_MakeInitialUrl_Hook localUrl: %s", il2cppi_to_string(localUrl).c_str());
+   // LOG_DEBUG("WebRequestUtils_MakeInitialUrl_Hook targetUrl: %s", il2cppi_to_string(targetUrl).c_str());
+    //LOG_DEBUG("WebRequestUtils_MakeInitialUrl_Hook localUrl: %s", il2cppi_to_string(localUrl).c_str());
 
     auto re = CALL_ORIGIN(WebRequestUtils_MakeInitialUrl_Hook, targetUrl, localUrl, method);
     std::string reurl = il2cppi_to_string(re);
-    LOG_DEBUG("WebRequestUtils_MakeInitialUrl_Hook return: %s", reurl.c_str());
+  
     get_proxy();
     if (proxy && !proxyhost.empty()) {
         std::string original_url = reurl;
@@ -78,18 +80,18 @@ app::String* WebRequestUtils_MakeInitialUrl_Hook(app::String* targetUrl, app::St
             reurl.replace(0, https_prefix.length(), http_prefix);
         }
     
-        LOG_WARNING("Proxy: %s --> %s", original_url.c_str(), reurl.c_str());
+        LOG_WARNING("Proxy:  \n\t-%s \n\t--> \n\t%s", original_url.c_str(), reurl.c_str());
         return string_to_il2cppi(reurl);
     }
+    LOG_DEBUG("WebRequestUtils_MakeInitialUrl_Hook return: %s", reurl.c_str());
     return re;
 }
-app::String* UnityWebRequest_get_url_Hook (void/*app::UnityWebRequest*/* __this, app::MethodInfo* method) {
-    auto re =CALL_ORIGIN(UnityWebRequest_get_url_Hook, __this, method);
-    LOG_DEBUG("UnityWebRequest_get_url_Hook return: %s", il2cppi_to_string(re).c_str());
 
-    //todo
-    return re;
-}
+
+
+
+
+
 DWORD WINAPI MainThread(LPVOID lpReserved) {
     AllocConsole();
     FILE* Dummy;
@@ -104,9 +106,9 @@ DWORD WINAPI MainThread(LPVOID lpReserved) {
 
     LOG_INFO("Initializing IL2CPP...");
    init_il2cpp();
-   
-   HookManager::install(app::WebRequestUtils_MakeInitialUrl, WebRequestUtils_MakeInitialUrl_Hook);
-   HookManager::install(app::UnityWebRequest_get_url, UnityWebRequest_get_url_Hook);
+   HookManager::install(app::WebRequestUtils_MakeInitialUrl,WebRequestUtils_MakeInitialUrl_Hook);
+
+
     Sleep(5000);
     LOG_INFO("Initialized IL2CPP");
 

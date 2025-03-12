@@ -133,14 +133,23 @@ namespace cheat {
 				if (rect.z < 0.1f) continue;
 
 				std::string showtext = "";
-
+				std::string name = entity.getName();
 				if (ESP.f_ShowName.getValue()) {
 					if (!showtext.empty()) showtext += " | ";
-
-					std::string name = entity.getName();
-
-					showtext += TRRawName(getPrefixBeforeLastUnderscore(name));
+					std::string rname = TRRawName(getPrefixBeforeLastUnderscore(name));
+					if (rname.empty())
+						rname= TRRawName(name);
+					if (!rname.empty())
+						showtext += rname;
+					else  if(!ESP.f_ShowDebug.getValue())
+						continue;
 				}
+
+                if (ESP.f_ShowDebug.getValue()) {
+					if (!showtext.empty()) showtext += " | ";
+					showtext += name;
+				}
+
 
 				if (ESP.f_ShowDis.getValue()) {
 					if (!showtext.empty()) showtext += " | ";

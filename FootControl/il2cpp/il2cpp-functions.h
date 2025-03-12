@@ -123,7 +123,10 @@ DO_APP_FUNC(0x0C724260, void, TMP_Text_set_text, (void/*TMP_Text*/* __this, app:
 //System.Runtime.InteropServices.Marshal$$PtrToStringAnsi
 
 DO_APP_FUNC(0x0B2D79B0, app::String*, Marshal_PtrToStringAnsi, (void* ptr, app::MethodInfo* method));
-DO_APP_FUNC(0x06DC8EB0, app::String*, I18nUtils_GetText, (app::String* key));
+DO_APP_FUNC(0x06DC8EB0, app::String*, I18nUtils_GetText, (app::String* key, app::MethodInfo* method));
+DO_APP_FUNC(0x06DC92E0, app::String*, I18nUtils_GetText_1, (void*/*I18nText */text, app::MethodInfo* method));
+//DO_APP_FUNC(0x06DC8F70, bool, I18nUtils_TryGetText, (app::String* key, app::String** value, app::MethodInfo* method));
+//DO_APP_FUNC(0x06DE3C10, app::String *, DialogTextData_get_dialogText, (void/*DialogTextData*/ * __this, app::MethodInfo * method));
 //playerspeed
 // 
 
@@ -277,6 +280,8 @@ DO_APP_FUNC(0x0C90CBE0, float, Input_1_GetAxis, (String* axisName, app::MethodIn
 
 DO_APP_FUNC(0x0CB97360, app::String*, WebRequestUtils_MakeInitialUrl, (app::String* targetUrl, app::String* localUrl, app::MethodInfo* method));
 DO_APP_FUNC(0x0CB9C430, app::String*, UnityWebRequest_get_url, (void/*app::UnityWebRequest*/* __this, MethodInfo* method));
+DO_APP_FUNC(0x0B4CE980, void/*UnityWebRequest*/*, HttpSender__CreateWebRequestPOST, (app::String* url,void* /*HttpSender_FPostOptions */options, app::MethodInfo* method));
+
 // Protection bypass
 
 

@@ -248,18 +248,6 @@
     <ClInclude Include="il2cpp\il2cpp-types-ptr.h" />
     <ClInclude Include="il2cpp\il2cpp-types.h" />
     <ClInclude Include="il2cpp\il2cppUtils.h" />
-    <ClInclude Include="games\lightsout.hpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="games\minesweeper.hpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="games\tictactoe.hpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="games\wordle.hpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClInclude>
     <ClInclude Include="gui\GuiDefinitions.h" />
     <ClInclude Include="gui\InitGui.h" />
     <ClCompile Include="gui\Sections.cpp" />
@@ -296,22 +284,6 @@
     <ClInclude Include="utils\util.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="games\lightsout.cpp">
-      <FileType>CppHeader</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="games\minesweeper.cpp">
-      <FileType>CppHeader</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="games\tictactoe.cpp">
-      <FileType>CppHeader</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="games\wordle.cpp">
-      <FileType>CppHeader</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClInclude Include="gui\MainGUI.h" />
     <ClInclude Include="api\imgui\ImGuiNotify\fa_solid_900.h" />
     <ClInclude Include="api\imgui\ImGuiNotify\font_awesome_5.h" />

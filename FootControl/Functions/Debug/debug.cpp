@@ -12,7 +12,7 @@ namespace cheat {
 	//DO_APP_FUNC(0x0C71CB20, void, TMP_Text_set_text, (void/*TMP_Text*/* __this, app::String* value, MethodInfo* method));
 
 
-
+	static app::String* I18nUtils_GetText_1_Hook (void*/*I18nText */text, app::MethodInfo* method);
 	Debug::Debug() {
 		//f_Enabled = config::getValue("functions:Debug", "enabled", false);
 
@@ -24,7 +24,10 @@ namespace cheat {
 		f_Proxy = config::getValue("functions:Debug", "Proxy", false);
 		f_Proxyhost = config::getValue<std::string>("functions:Debug", "Proxyhost", "");
 		HookManager::install(app::EventSystem_RaycastAll, EventSystem_RaycastAll_Hook);// 获取鼠标下组件
-		//HookManager::install(app::WebRequestUtils_MakeInitialUrl, WebRequestUtils_MakeInitialUrl_Hook);
+
+        //HookManager::install(app::I18nUtils_GetText_1, I18nUtils_GetText_1_Hook);
+
+
 
 
 	}
@@ -127,7 +130,28 @@ namespace cheat {
 
 	}
 
+	//app::String* I18nUtils_GetText_Hook(app::String* key, app::MethodInfo* method) {
+	//
+	//	auto re = CALL_ORIGIN(I18nUtils_GetText_Hook, key, method);
+	//	if (il2cppi_to_string(re) == "余烬")
+	//		return string_to_il2cppi("余烬(Gemini-2.0-flash-exp)");
+	//	if (il2cppi_to_string(re)=="帝江号的各项功能都很完备，但终究不是战舰……没有常时备战的流程，多少让我有些不习惯。")
+	//		return string_to_il2cppi("您好！我是 Google 训练的大型语言模型。我的设计目标是理解和生成人类语言，并以有用的方式回应各种提示和问题。");
+	//	if (il2cppi_to_string(re) == "有空和我过两招怎么样？——当然了，别让佩丽卡知道！")
+	//		return string_to_il2cppi("您好！我是 Google 训练的大型语言模型。我的设计目标是理解和生成人类语言，并以有用的方式回应各种提示和问题。");
+	//	return re;
+	//
+	//}
+	app::String* I18nUtils_GetText_1_Hook(void*/*I18nText */text, app::MethodInfo* method) {
+		auto re = CALL_ORIGIN(I18nUtils_GetText_1_Hook, text, method);
+		//LOG_DEBUG("I18nUtils_GetText_1_Hook %s", il2cppi_to_string(re).c_str());
 
+		if (il2cppi_to_string(re) == "陈千语")
+			return string_to_il2cppi("陈千语(Gemini-2.0-flash-exp)");
+
+
+		return re;
+	}
 
 
 }

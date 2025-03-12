@@ -1,7 +1,7 @@
 ﻿# FootControl
 
 ### A Magic of FootControl Game 2
-command:workbench.trust.manage
+
 ---
 
 ## ✨ Features
@@ -22,7 +22,7 @@ command:workbench.trust.manage
 
 ## 🎮 Supported Game Version
 
-- **[CBT2 OS Version](https://launcher.hg-cdn.com/uXUuLlNbIYmMMTlN/launcher/6/1/Windows/0.3.8_Sf0rvOfH0nZWp5XU/Endfield_TBeta_global_setup.exe)**
+- ~~[CBT2 OS](https://launcher.hg-cdn.com/uXUuLlNbIYmMMTlN/launcher/6/1/Windows/0.3.8_Sf0rvOfH0nZWp5XU/Endfield_TBeta_global_setup.exe)~~ (outdated)
 
 ---
 

@@ -60,7 +60,7 @@ namespace cheat {
             }
         }
         else {
-            return idPrefix; // Return "Unknown" if the ID is not found
+            return ""; // Return "Unknown" if the ID is not found
         }
     }
 }
