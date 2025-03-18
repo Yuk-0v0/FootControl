@@ -17,10 +17,13 @@
 #pragma comment(lib, "detours.lib")
 
 #include <Windows.h>
+#include "D3D11Hook.h"
 
-#include "../../includes.h"
 #include "../imgui/ImGui/imgui_internal.h"
 #include "../../gui/InitGui.h"
+typedef HRESULT(__stdcall* Present) (IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flags);
+typedef LRESULT(CALLBACK* WNDPROC)(HWND, UINT, WPARAM, LPARAM);
+typedef uintptr_t PTR;
 
 // D3X HOOK DEFINITIONS
 typedef HRESULT(__fastcall* IDXGISwapChainPresent)(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flags);
@@ -39,69 +42,7 @@ static WNDPROC OriginalWndProcHandler = nullptr;
 HWND window = nullptr;
 IDXGISwapChainPresent fnIDXGISwapChainPresent;
 
-bool LoadTextureFromResources(LPCTSTR resource_name, LPCTSTR resource_type, ID3D11Device* pDevice, ID3D11ShaderResourceView** out_srv, int* out_width, int* out_height) {
-	if (pDevice == nullptr)
-		return false;
 
-	HMODULE hModuleF = GetModuleHandleA("FootControl.dll");
-	//HMODULE hModuleF;
-	// Find the resource handle within the DLL
-	HRSRC hResource = FindResource(hModuleF, resource_name, resource_type);
-	if (!hResource) {
-		// Resource not found
-		return false;
-	}
-
-	// Load the resource data
-	HGLOBAL hMemory = LoadResource(hModuleF, hResource);
-	if (!hMemory) {
-		// Failed to load resource
-		return false;
-	}
-
-	// Get the resource data pointer and size
-	LPVOID pData = LockResource(hMemory);
-	DWORD dataSize = SizeofResource(hModuleF, hResource);
-
-	// Create texture
-	D3D11_TEXTURE2D_DESC desc;
-	ZeroMemory(&desc, sizeof(desc));
-	desc.Width = *out_width;
-	desc.Height = *out_height;
-	desc.MipLevels = 1;
-	desc.ArraySize = 1;
-	desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-	desc.SampleDesc.Count = 1;
-	desc.Usage = D3D11_USAGE_DEFAULT;
-	desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
-	desc.CPUAccessFlags = 0;
-
-	D3D11_SUBRESOURCE_DATA subResource;
-	ZeroMemory(&subResource, sizeof(subResource));
-	subResource.pSysMem = pData;
-	subResource.SysMemPitch = desc.Width * 4;
-	subResource.SysMemSlicePitch = 0;
-
-	ID3D11Texture2D* pTexture = nullptr;
-	pDevice->CreateTexture2D(&desc, &subResource, &pTexture);
-	if (pTexture == nullptr)
-		return false;
-
-	// Create texture view
-	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
-	ZeroMemory(&srvDesc, sizeof(srvDesc));
-	srvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
-	srvDesc.Texture2D.MipLevels = desc.MipLevels;
-	srvDesc.Texture2D.MostDetailedMip = 0;
-
-	pDevice->CreateShaderResourceView(pTexture, &srvDesc, out_srv);
-	pTexture->Release();
-
-	*out_width = desc.Width;
-	*out_height = desc.Height;
-	return true;
-}
 
 // Boolean
 BOOL g_bInitialised = false;

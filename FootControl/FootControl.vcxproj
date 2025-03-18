@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="api\directx\D3D11Hook.cpp" />
     <ClCompile Include="Functions\Debug\debug.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
@@ -192,6 +193,7 @@
     <ClCompile Include="utils\image\ImageLoader.cpp" />
     <ClCompile Include="utils\Logger.cpp" />
     <ClCompile Include="utils\util.cpp" />
+    <ClInclude Include="api\directx\D3D11Hook.h" />
     <ClInclude Include="api\magic_enum\magic_enum.hpp" />
     <ClInclude Include="config\ConfigField.h" />
     <ClInclude Include="config\ConfigManager.h" />
@@ -209,10 +211,6 @@
     <ClCompile Include="config\ConfigManager.cpp">
       <FileType>CppHeader</FileType>
     </ClCompile>
-    <ClCompile Include="api\directx\D3D11Hook.cpp">
-      <FileType>CppHeader</FileType>
-    </ClCompile>
-    <ClInclude Include="api\directx\D3D11Hook.hpp" />
     <ClInclude Include="functions\about\About.h" />
     <ClInclude Include="Functions\visuals\AntiDither.h" />
     <ClInclude Include="Functions\visuals\CustomProfile.h" />

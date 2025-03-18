@@ -1,8 +1,8 @@
-﻿#include "api/directx/D3D11Hook.hpp"
+﻿#include "api/directx/D3D11Hook.h"
 #include "il2cpp/il2cpp-init.hpp"
 #include <windows.h>
 
-#include "includes.h"
+
 #include "api/json/json.hpp"
 using json = nlohmann::json;
 bool proxy = false;
@@ -93,12 +93,7 @@ app::String* WebRequestUtils_MakeInitialUrl_Hook(app::String* targetUrl, app::St
 
 
 DWORD WINAPI MainThread(LPVOID lpReserved) {
-    AllocConsole();
-    FILE* Dummy;
-    freopen_s(&Dummy, "CONOUT$", "w", stdout);
-    freopen_s(&Dummy, "CONIN$", "w", stderr);
-    SetConsoleTitle(TEXT("FootControl Console"));
-    SetConsoleOutputCP(CP_UTF8);
+
     LOG_INFO("Starting...");
 
     while (!FindWindowA("UnityWndClass", nullptr))
@@ -116,11 +111,6 @@ DWORD WINAPI MainThread(LPVOID lpReserved) {
     auto& settings = cheat::Settings::getInstance();
     int initDelay = settings.f_InitDelay.getValue();
 
-    //if (settings.f_ShowRpc.getValue()) {
-    //    //g_Discord->Initialize();
-    //    //g_Discord->Update();
-    //    //LOG_INFO("Showing RPC...");
-    //}
 
     LOG_INFO("Waiting %i seconds before starting DirectX...", initDelay / 1000);
     Sleep(initDelay);
@@ -132,13 +122,20 @@ DWORD WINAPI MainThread(LPVOID lpReserved) {
     } __except (EXCEPTION_EXECUTE_HANDLER) {
         LOG_ERROR("Unhandled exception in opening menu.");
     }
+
     return 0;
 }
 
 BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved) {
+    AllocConsole();
+    FILE* Dummy;
+    freopen_s(&Dummy, "CONOUT$", "w", stdout);
+    freopen_s(&Dummy, "CONIN$", "w", stderr);
+    SetConsoleTitle(TEXT("FootControl Console"));
+    SetConsoleOutputCP(CP_UTF8);
     if (fdwReason == DLL_PROCESS_ATTACH) {
       //  CloseHandle(CreateThread(NULL, 0, &initLua, NULL, NULL, NULL));
-        CreateThread(NULL, 0, &MainThread, NULL, NULL, NULL);
+       CreateThread(NULL, 0, &MainThread, NULL, NULL, NULL);
     }
     return TRUE;
 }
